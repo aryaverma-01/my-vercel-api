@@ -1,0 +1,24 @@
+from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
+
+marks_data = {
+    "Alice": 85,
+    "Bob": 90,
+    "Charlie": 78,
+    "David": 92,
+    "Eve": 88,
+}
+
+@app.get("/api")
+def get_marks(name: list[str] = Query(...)):
+    marks = [marks_data.get(n, None) for n in name]
+    return {"marks": marks}
